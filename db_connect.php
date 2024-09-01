@@ -4,7 +4,7 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 // Parse the DATABASE_URL environment variable
-$db_url = parse_url(getenv('DATABASE_URL'));
+$db_url = parse_url(getenv(' postgres://u898pdte4dmfce:p06908425baac8c401d799e0e5d3e188660416d337a97535d1d1f08eadfd22512@c97r84s7psuajm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d584v4eemd9ion'));
 
 // Extract database connection details from the URL
 $host = $db_url['host'];
