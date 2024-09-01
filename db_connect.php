@@ -3,15 +3,28 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-// Parse the DATABASE_URL environment variable
-$db_url = parse_url(getenv('postgres://u898pdte4dmfce:p06908425baac8c401d799e0e5d3e188660416d337a97535d1d1f08eadfd22512@c97r84s7psuajm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d584v4eemd9ion'));
+// Get the DATABASE_URL environment variable
+$db_url = getenv('DATABASE_URL');
+
+// Check if DATABASE_URL is set
+if (!$db_url) {
+    die("DATABASE_URL environment variable is not set.");
+}
+
+// Parse the DATABASE_URL
+$parsed_url = parse_url($db_url);
+
+// Check if the parse was successful and required keys exist
+if (!$parsed_url || !isset($parsed_url['host'], $parsed_url['port'], $parsed_url['user'], $parsed_url['pass'])) {
+    die("Error parsing DATABASE_URL. Ensure it is correctly formatted.");
+}
 
 // Extract database connection details from the URL
-$host = $db_url['host'];
-$port = $db_url['port'];
-$username = $db_url['user'];
-$password = $db_url['pass'];
-$database = ltrim($db_url['path'], '/');
+$host = $parsed_url['host'];
+$port = $parsed_url['port'];
+$username = $parsed_url['user'];
+$password = $parsed_url['pass'];
+$database = ltrim($parsed_url['path'], '/');
 
 // Create a connection to the PostgreSQL database using mysqli
 $mysqli = new mysqli($host, $username, $password, $database, $port);
